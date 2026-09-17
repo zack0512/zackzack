@@ -45,7 +45,61 @@
         <a href="https://www.youtube.com/" class="btn" target="_blank">前往YouTube</a>
         <a href="https://www.crazygames.com/" class="btn" target="_blank">前往crazy game</a>
         <a href="https://zack0512.github.io/snake/" class="btn" target="_blank">前往沙特貪吃蛇（終極版）</a>
+<style>
+/* 1. 彩虹流光背景動畫 */
+@keyframes rainbowFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 
+/* 2. 霓虹燈閃爍與呼吸放大動畫 */
+@keyframes neonBlinkPulse {
+    0%, 100% {
+        opacity: 1;
+        filter: drop-shadow(0 0 12px rgba(255, 0, 128, 0.9)) drop-shadow(0 0 25px rgba(0, 240, 255, 0.8));
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.85;
+        filter: drop-shadow(0 0 25px rgba(255, 230, 0, 1)) drop-shadow(0 0 40px rgba(255, 0, 200, 0.9));
+        transform: scale(1.04);
+    }
+}
+
+/* 3. 彩色閃爍按鈕樣式 */
+.btn-colorful-flash {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 900;
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #1de840, #1ddde8, #dd00f3, #ff007f);
+    background-size: 300% 300%;
+    animation: rainbowFlow 3s ease infinite, neonBlinkPulse 1.2s ease-in-out infinite;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    transition: transform 0.1s ease;
+}
+
+.btn-colorful-flash:active {
+    transform: scale(0.95) !important;
+}
+</style>
+
+<!-- 彩色閃爍按鈕 HTML 標籤 (直接貼在您想顯示按鈕的位置) -->
+<a href="https://zack0512.github.io/snake/" class="btn-colorful-flash" target="_blank">
+    <i class="fa-solid fa-fire" style="color: #fde047;"></i>
+    <span>前往沙特貪吃蛇（終極版）</span>
+    <i class="fa-solid fa-up-right-from-square" style="font-size: 0.8em; opacity: 0.9;"></i>
+</a>
+```
     </div>
     
 
