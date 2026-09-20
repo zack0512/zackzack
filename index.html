@@ -14,6 +14,7 @@
             font-family: Arial, sans-serif;
             margin: 30px;
             background-color: #f9f9f9;
+            padding-bottom: 70px; /* 預留底部空間給 Cookie 提示 */
         }
         h1 {
             color: #333;
@@ -79,6 +80,49 @@
         .btn-colorful-flash:active {
             transform: scale(0.95) !important;
         }
+
+        /* 🍪 Cookie 同意橫幅樣式 */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #222222;
+            color: #ffffff;
+            padding: 12px 20px;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            z-index: 9999;
+            font-size: 14px;
+        }
+        .cookie-banner p {
+            margin: 0;
+        }
+        .cookie-btns button {
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-accept {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-accept:hover {
+            background-color: #218838;
+        }
+        .btn-decline {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-decline:hover {
+            background-color: #5a6268;
+        }
     </style>
 </head>
 <body>
@@ -103,10 +147,37 @@
     <hr style="margin-top: 30px;">
 
     <div>
-        <small>有意製作網站，請洽沙特本人，</small><br>
-        <big>進入本網站表示您同意本網站使用cookie</big><br>
+        <small>有意製作網站，請洽沙特本人</small><br>
         <small>©2026沙特 v.1.05</small>
     </div>
+
+    <!-- 🍪 Cookie 同意橫幅 -->
+    <div id="cookieBanner" class="cookie-banner" style="display: none;">
+        <p>🍪 本網站使用 Cookie 以提供最佳服務與廣告體驗。</p>
+        <div class="cookie-btns">
+            <button class="btn-accept" onclick="acceptCookie()">同意</button>
+            <button class="btn-decline" onclick="declineCookie()">拒絕</button>
+        </div>
+    </div>
+
+    <script>
+        // 檢查是否已儲存過使用者的選擇
+        window.onload = function() {
+            if (!localStorage.getItem('cookieConsent')) {
+                document.getElementById('cookieBanner').style.display = 'flex';
+            }
+        };
+
+        function acceptCookie() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            document.getElementById('cookieBanner').style.display = 'none';
+        }
+
+        function declineCookie() {
+            localStorage.setItem('cookieConsent', 'declined');
+            document.getElementById('cookieBanner').style.display = 'none';
+        }
+    </script>
 
 </body>
 </html>
