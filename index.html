@@ -1,44 +1,119 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta name="google-site-verification" content="Gxnd9no0V4ViD4wlCjE9qzfH73Mq75e486LkkyaAtS8" />
-    <!-- AdSense 驗證標籤 -->
-    <meta name="google-adsense-account" content="ca-pub-1973255703694706">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1973255703694706"
-     crossorigin="anonymous"></script>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>沙特萬能控制板</title>
+    <meta name="description" content="沙特萬能控制板 - 提供常用工具、遊戲與專屬頁面快捷入口">
+    
+    <!-- Google 驗證與 AdSense -->
+    <meta name="google-site-verification" content="Gxnd9no0V4ViD4wlCjE9qzfH73Mq75e486LkkyaAtS8" />
+    <meta name="google-adsense-account" content="ca-pub-1973255703694706">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1973255703694706" crossorigin="anonymous"></script>
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 30px;
-            background-color: #f9f9f9;
-            padding-bottom: 70px; /* 預留底部空間給 Cookie 提示 */
-        }
-        h1 {
-            color: #333;
-        }
-        .menu {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-width: 250px;
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            text-align: center;
-        }
-        .btn:hover {
-            background-color: #0056b3;
+        /* 1. 預設主題（淺色模式） */
+        :root {
+            color-scheme: light dark; /* 讓瀏覽器滾動條等元件也能跟隨系統變化 */
+            
+            --primary-color: #007bff;
+            --primary-hover: #0056b3;
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --card-border: #e0e0e0;
+            --text-color: #333333;
+            --text-muted: #666666;
+            --border-radius: 10px;
+            --shadow: 0 2px 4px rgba(0,0,0,0.04);
+            --shadow-hover: 0 4px 12px rgba(0,0,0,0.12);
+            --footer-border: #e0e0e0;
         }
 
+        /* 2. 自動偵測系統深色模式 */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary-color: #3b82f6;
+                --primary-hover: #60a5fa;
+                --bg-color: #121212;
+                --card-bg: #1e1e1e;
+                --card-border: #2d2d2d;
+                --text-color: #e0e0e0;
+                --text-muted: #a0a0a0;
+                --shadow: 0 2px 4px rgba(0,0,0,0.3);
+                --shadow-hover: 0 4px 12px rgba(0,0,0,0.5);
+                --footer-border: #2c2c2c;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 20px 20px 80px 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: background-color 0.3s ease, color 0.3s ease; /* 深淺切換滑順過渡 */
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 24px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 {
+            margin-bottom: 16px;
+            font-size: 2rem;
+        }
+
+        main {
+            width: 100%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* 網格選單配置 */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 12px;
+            width: 100%;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 16px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--card-border);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* 彩虹流光特效按鈕 */
         @keyframes rainbowFlow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -47,152 +122,165 @@
 
         @keyframes neonBlinkPulse {
             0%, 100% {
-                opacity: 1;
-                filter: drop-shadow(0 0 12px rgba(255, 0, 128, 0.9)) drop-shadow(0 0 25px rgba(0, 240, 255, 0.8));
+                filter: drop-shadow(0 0 8px rgba(255, 0, 128, 0.7));
                 transform: scale(1);
             }
             50% {
-                opacity: 0.85;
-                filter: drop-shadow(0 0 25px rgba(255, 230, 0, 1)) drop-shadow(0 0 40px rgba(255, 0, 200, 0.9));
-                transform: scale(1.04);
+                filter: drop-shadow(0 0 16px rgba(255, 230, 0, 0.8));
+                transform: scale(1.02);
             }
         }
 
         .btn-colorful-flash {
-            display: inline-flex;
+            display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
             padding: 14px 28px;
-            border-radius: 12px;
+            border-radius: var(--border-radius);
             text-decoration: none;
             color: #ffffff;
             font-weight: 900;
-            font-size: 16px;
-            letter-spacing: 0.5px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
             background: linear-gradient(124deg, #ff2400, #e81d1d, #e8b71d, #1de840, #1ddde8, #dd00f3, #ff007f);
             background-size: 300% 300%;
-            animation: rainbowFlow 3s ease infinite, neonBlinkPulse 1.2s ease-in-out infinite;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
-            transition: transform 0.1s ease;
+            animation: rainbowFlow 3s ease infinite, neonBlinkPulse 1.5s ease-in-out infinite;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            margin: 0 auto;
+            width: 100%;
+            max-width: 300px;
         }
 
         .btn-colorful-flash:active {
-            transform: scale(0.95) !important;
+            transform: scale(0.96) !important;
         }
 
-        /* 🍪 Cookie 同意橫幅樣式 */
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: var(--text-muted);
+            border-top: 1px solid var(--footer-border);
+            padding-top: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        footer p {
+            margin: 4px 0;
+        }
+
+        /* Cookie Banner */
         .cookie-banner {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background-color: #222222;
+            background-color: #1e1e1e;
             color: #ffffff;
-            padding: 12px 20px;
-            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.2);
+            padding: 14px 24px;
+            box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
             z-index: 9999;
             font-size: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         .cookie-banner p {
             margin: 0;
         }
+
+        .cookie-btns {
+            display: flex;
+            gap: 8px;
+        }
+
         .cookie-btns button {
             border: none;
-            padding: 6px 14px;
-            border-radius: 4px;
+            padding: 8px 16px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
+            transition: opacity 0.2s;
         }
+
+        .cookie-btns button:hover {
+            opacity: 0.9;
+        }
+
         .btn-accept {
             background-color: #28a745;
             color: white;
         }
-        .btn-accept:hover {
-            background-color: #218838;
-        }
+
         .btn-decline {
             background-color: #6c757d;
             color: white;
-        }
-        .btn-decline:hover {
-            background-color: #5a6268;
         }
     </style>
 </head>
 <body>
 
-    <h1>沙特萬能控制板</h1>
-     <a href="https://zack0512.github.io/happy/" class="btn-colorful-flash" target="_blank">
+    <header>
+        <h1>沙特萬能控制板</h1>
+        <a href="https://zack0512.github.io/happy/" class="btn-colorful-flash" target="_blank" rel="noopener noreferrer">
             <span>前往沙特驚喜</span>
-     </a>
-
-    <div class="menu">
-        <a href="https://www.roblox.com/download" class="btn" target="_blank">點擊下載roblox</a>
-        <a href="https://www.google.com" class="btn" target="_blank">新增google分頁</a>
-        <a href="https://mail.google.com/mail/mu/mp/635/" class="btn" target="_blank">前往gmail</a>
-        <a href="https://workspace.google.com/intl/zh-TW/products/drive/" class="btn" target="_blank">前往雲端硬碟</a>
-        <a href="https://edu.google.com/intl/ALL_tw/workspace-for-education/products/classroom/" class="btn" target="_blank">前往classroom</a>
-        <a href="https://www.youtube.com/" class="btn" target="_blank">前往YouTube</a>
-        <a href="https://www.crazygames.com/" class="btn" target="_blank">前往crazy game</a>
-        <a href="https://zack0512.github.io/joke" class="btn" target="_blank">前往每週笑話</a>
-
-        <a href="https://zack0512.github.io/homework/" class="btn-colorful-flash" target="_blank">
-            <span>前往作業版</span>
         </a>
+    </header>
 
-        <a href="https://zack0512.github.io/tetris/" class="btn-colorful-flash" target="_blank">
-            <span>前往沙特俄羅斯方塊</span>
-        </a>
-                <a href="https://zack0512.github.io/2048/" class="btn-colorful-flash" target="_blank">
-            <span>前往沙特2048</span>
-                </a>
-                <a href="https://zack0512.github.io/snake/" class="btn-colorful-flash" target="_blank">
-            <span>前往沙特貪吃蛇（終極版）</span>
-        </a>
+    <main>
+        <div class="menu-grid">
+            <a href="https://www.roblox.com/download" class="btn" target="_blank" rel="noopener noreferrer">點擊下載 Roblox</a>
+            <a href="https://www.google.com" class="btn" target="_blank" rel="noopener noreferrer">新增 Google 分頁</a>
+            <a href="https://mail.google.com/mail/mu/mp/635/" class="btn" target="_blank" rel="noopener noreferrer">前往 Gmail</a>
+            <a href="https://workspace.google.com/intl/zh-TW/products/drive/" class="btn" target="_blank" rel="noopener noreferrer">前往雲端硬碟</a>
+            <a href="https://edu.google.com/intl/ALL_tw/workspace-for-education/products/classroom/" class="btn" target="_blank" rel="noopener noreferrer">前往 Classroom</a>
+            <a href="https://www.youtube.com/" class="btn" target="_blank" rel="noopener noreferrer">前往 YouTube</a>
+            <a href="https://www.crazygames.com/" class="btn" target="_blank" rel="noopener noreferrer">前往 CrazyGames</a>
+            <a href="https://zack0512.github.io/joke" class="btn" target="_blank" rel="noopener noreferrer">前往沙特每週笑話</a>
+            <a href="https://zack0512.github.io/homework" class="btn" target="_blank" rel="noopener noreferrer">前往沙特每日作業</a>
+            <a href="https://zack0512.github.io/tetris" class="btn" target="_blank" rel="noopener noreferrer">前往沙特俄羅斯方塊</a>
+            <a href="https://zack0512.github.io/2048" class="btn" target="_blank" rel="noopener noreferrer">前往沙特 2048</a>
+            <a href="https://zack0512.github.io/snake" class="btn" target="_blank" rel="noopener noreferrer">前往沙特貪吃蛇</a>
+        </div>
+    </main>
 
-        
-    </div>
+    <footer>
+        <p><strong>有意製作網站，請洽沙特本人</strong></p>
+        <p><small>劉大維好棒</small></p>
+        <p><small>© 2026 沙特 v.1.09</small></p>
+    </footer>
 
-    <hr style="margin-top: 30px;">
-
-    <div>
-        <big>有意製作網站，請洽沙特本人</big><br>
-        <small>劉大維好棒</small><br>
-        <small>©2026沙特 v.1.09</small>
-    </div>
-
-    <!-- 🍪 Cookie 同意橫幅 -->
-    <div id="cookieBanner" class="cookie-banner" style="display: none;">
+    <aside id="cookieBanner" class="cookie-banner" style="display: none;">
         <p>🍪 本網站使用 Cookie 以提供最佳服務與廣告體驗。</p>
         <div class="cookie-btns">
-            <button class="btn-accept" onclick="acceptCookie()">同意（agree）</button>
-            <button class="btn-decline" onclick="declineCookie()">拒絕（reject）</button>
+            <button class="btn-accept" onclick="acceptCookie()">同意 (Agree)</button>
+            <button class="btn-decline" onclick="declineCookie()">拒絕 (Reject)</button>
         </div>
-    </div>
+    </aside>
 
     <script>
-        // 檢查是否已儲存過使用者的選擇
-        window.onload = function() {
+        window.addEventListener('DOMContentLoaded', () => {
             if (!localStorage.getItem('cookieConsent')) {
                 document.getElementById('cookieBanner').style.display = 'flex';
             }
-        };
+        });
 
-        function acceptCookie() {
-            localStorage.setItem('cookieConsent', 'accepted');
+        function setConsent(choice) {
+            localStorage.setItem('cookieConsent', choice);
             document.getElementById('cookieBanner').style.display = 'none';
         }
 
+        function acceptCookie() {
+            setConsent('accepted');
+        }
+
         function declineCookie() {
-            localStorage.setItem('cookieConsent', 'declined');
-            document.getElementById('cookieBanner').style.display = 'none';
+            setConsent('declined');
         }
     </script>
 </body>
