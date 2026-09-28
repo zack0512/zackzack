@@ -24,14 +24,29 @@
             --text-color: #0f172a;
             --text-muted: #64748b;
             --border-radius: 14px;
-            --shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.05), 0 3px 6px -3px rgba(0, 0, 0, 0.05);
+            --shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.05);
             --shadow-hover: 0 20px 30px -10px rgba(37, 99, 235, 0.25);
             --footer-border: rgba(203, 213, 225, 0.6);
+            --grid-pattern: rgba(0, 0, 0, 0.03);
         }
 
-        /* 2. 深色模式優化 */
+        /* 手動切換或系統深色 */
+        [data-theme="dark"] {
+            --primary-color: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.35);
+            --bg-gradient: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 20px 35px -5px rgba(0, 0, 0, 0.6), 0 0 20px var(--primary-glow);
+            --footer-border: rgba(255, 255, 255, 0.1);
+            --grid-pattern: rgba(255, 255, 255, 0.03);
+        }
+
         @media (prefers-color-scheme: dark) {
-            :root {
+            :root:not([data-theme="light"]) {
                 --primary-color: #3b82f6;
                 --primary-glow: rgba(59, 130, 246, 0.35);
                 --bg-gradient: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
@@ -42,17 +57,14 @@
                 --shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.3);
                 --shadow-hover: 0 20px 35px -5px rgba(0, 0, 0, 0.6), 0 0 20px var(--primary-glow);
                 --footer-border: rgba(255, 255, 255, 0.1);
+                --grid-pattern: rgba(255, 255, 255, 0.03);
             }
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         @media (min-width: 769px) {
-            body, a, button, input {
-                cursor: none !important;
-            }
+            body, a, button, input { cursor: none !important; }
         }
 
         body {
@@ -68,33 +80,37 @@
             min-height: 100vh;
             overflow-x: hidden;
             transition: background 0.3s ease, color 0.3s ease;
+            position: relative;
+        }
+
+        /* 科技背景網格圖層 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(var(--grid-pattern) 1px, transparent 1px);
+            background-size: 24px 24px;
+            pointer-events: none;
+            z-index: -1;
         }
 
         /* 自訂游標 */
         .cursor-dot {
-            width: 8px;
-            height: 8px;
+            width: 8px; height: 8px;
             background-color: var(--primary-color);
             border-radius: 50%;
-            position: fixed;
-            top: 0;
-            left: 0;
+            position: fixed; top: 0; left: 0;
             transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 99999;
+            pointer-events: none; z-index: 99999;
         }
 
         .cursor-outline {
-            width: 38px;
-            height: 38px;
+            width: 38px; height: 38px;
             border: 2px solid var(--primary-color);
             border-radius: 50%;
-            position: fixed;
-            top: 0;
-            left: 0;
+            position: fixed; top: 0; left: 0;
             transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 99998;
+            pointer-events: none; z-index: 99998;
             opacity: 0.6;
             transition: transform 0.2s ease-out, background-color 0.3s ease;
         }
@@ -109,10 +125,32 @@
             .cursor-dot, .cursor-outline { display: none !important; }
         }
 
-        /* 標頭與 Logo 區域 */
+        /* 右上角切換主題按鈕 */
+        .theme-toggle-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-color);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle-btn:hover {
+            transform: scale(1.05);
+            border-color: var(--primary-color);
+        }
+
+        /* 標頭區域 */
         header {
             text-align: center;
-            margin-bottom: 36px;
+            margin-bottom: 30px;
             width: 100%;
             max-width: 840px;
         }
@@ -126,14 +164,20 @@
             color: var(--primary-color);
             background: var(--primary-glow);
             border-radius: 20px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             text-transform: uppercase;
             box-shadow: 0 2px 10px var(--primary-glow);
         }
 
-        /* 打字機效果標題 */
+        .greeting-time {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
         h1 {
-            margin: 0 0 20px 0;
+            margin: 0 0 16px 0;
             font-size: 2.5rem;
             font-weight: 800;
             letter-spacing: -0.5px;
@@ -148,8 +192,7 @@
 
         .typewriter-cursor {
             display: inline-block;
-            width: 4px;
-            height: 2.2rem;
+            width: 4px; height: 2.2rem;
             background-color: var(--primary-color);
             margin-left: 6px;
             border-radius: 2px;
@@ -160,6 +203,46 @@
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
+        }
+
+        /* 搜尋列 */
+        .search-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto 24px auto;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 45px 14px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            backdrop-filter: blur(10px);
+            outline: none;
+            box-shadow: var(--shadow);
+            transition: all 0.25s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .search-shortcut-hint {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--card-border);
+            color: var(--text-muted);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            pointer-events: none;
         }
 
         .header-actions {
@@ -189,7 +272,7 @@
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 18px;
             width: 100%;
-            perspective: 1000px; /* 啟用 3D 透視 */
+            perspective: 1000px;
         }
 
         .btn {
@@ -211,17 +294,20 @@
             position: relative;
             overflow: hidden;
             transform-style: preserve-3d;
-            transition: transform 0.15s ease-out, box-shadow 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+            transition: transform 0.15s ease-out, box-shadow 0.25s ease, border-color 0.25s ease, opacity 0.3s ease;
         }
 
-        /* 光澤高光層（Mouse Light Spot） */
+        .btn.hidden {
+            display: none !important;
+        }
+
+        /* 光澤高光層 */
         .btn::after {
             content: '';
             position: absolute;
             top: var(--mouse-y, 50%);
             left: var(--mouse-x, 50%);
-            width: 180px;
-            height: 180px;
+            width: 180px; height: 180px;
             background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
             transform: translate(-50%, -50%);
             opacity: 0;
@@ -229,17 +315,13 @@
             transition: opacity 0.3s ease;
         }
 
-        .btn:hover::after {
-            opacity: 1;
-        }
+        .btn:hover::after { opacity: 1; }
 
         .btn::before {
             content: '';
             position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 4px;
+            left: 0; top: 0;
+            height: 100%; width: 4px;
             background: var(--primary-color);
             opacity: 0;
             transition: opacity 0.25s ease;
@@ -251,11 +333,9 @@
             box-shadow: var(--shadow-hover);
         }
 
-        .btn:hover::before {
-            opacity: 1;
-        }
+        .btn:hover::before { opacity: 1; }
 
-        /* 彩虹流光按鈕 + 3D 透視支援 */
+        /* 彩虹流光按鈕 */
         @keyframes rainbowFlow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -285,11 +365,13 @@
             transition: transform 0.15s ease-out, box-shadow 0.25s ease;
         }
 
+        .btn-colorful-flash.hidden { display: none !important; }
+
         .btn-colorful-flash:hover {
             box-shadow: 0 14px 30px rgba(0, 0, 0, 0.3);
         }
 
-        /* 滑動觸發入場動畫（Scroll Triggered Entrance） */
+        /* 滑動觸發入場動畫 */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -313,9 +395,7 @@
             font-size: 0.9rem;
         }
 
-        footer p {
-            margin: 6px 0;
-        }
+        footer p { margin: 6px 0; }
 
         /* Cookie Banner */
         .cookie-banner {
@@ -343,10 +423,7 @@
 
         .cookie-banner p { margin: 0; }
 
-        .cookie-btns {
-            display: flex;
-            gap: 8px;
-        }
+        .cookie-btns { display: flex; gap: 8px; }
 
         .cookie-btns button {
             border: none;
@@ -357,15 +434,8 @@
             transition: all 0.2s;
         }
 
-        .btn-accept {
-            background-color: var(--primary-color);
-            color: white;
-        }
-
-        .btn-decline {
-            background-color: rgba(255, 255, 255, 0.15);
-            color: white;
-        }
+        .btn-accept { background-color: var(--primary-color); color: white; }
+        .btn-decline { background-color: rgba(255, 255, 255, 0.15); color: white; }
 
         .btn-accept:hover, .btn-decline:hover {
             opacity: 0.9;
@@ -379,50 +449,62 @@
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
+    <!-- 主題切換按鈕 -->
+    <button class="theme-toggle-btn" id="themeToggleBtn">🌙 暗色模式</button>
+
     <header class="reveal">
         <span class="brand-badge">Zack Dashboard</span>
         
+        <!-- 動態時間招呼語 -->
+        <div class="greeting-time" id="greetingTime">載入即時時間...</div>
+
         <!-- 動態打字機標題 -->
         <h1>
             <span id="typewriter"></span><span class="typewriter-cursor"></span>
         </h1>
         
+        <!-- 即時搜尋列 -->
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="搜尋快捷功能或遊戲... (按下 / 快速搜尋)" autocomplete="off">
+            <span class="search-shortcut-hint">/</span>
+        </div>
+
         <div class="header-actions">
-            <a href="https://zack0512.github.io/happy/" class="btn-colorful-flash tilt-effect" target="_blank" rel="noopener noreferrer">
+            <a href="https://zack0512.github.io/happy/" class="btn-colorful-flash tilt-effect search-item" target="_blank" rel="noopener noreferrer">
                 <span>前往沙特驚喜 ✨</span>
             </a>
             
             <p class="survey-prompt">⭐ 歡迎自由填答修改建議 ⭐</p>
             
-            <a href="https://forms.gle/1P2aF2Lsrt4iYuVZ7" class="btn-colorful-flash tilt-effect" target="_blank" rel="noopener noreferrer">
+            <a href="https://forms.gle/1P2aF2Lsrt4iYuVZ7" class="btn-colorful-flash tilt-effect search-item" target="_blank" rel="noopener noreferrer">
                 <span>填寫建議問卷 📝</span>
             </a>
         </div>
     </header>
 
     <main>
-        <div class="menu-grid">
-            <a href="https://www.roblox.com/download" class="btn tilt-effect reveal" target="_blank" rel="noopener noreferrer">點擊下載 Roblox</a>
-            <a href="https://www.google.com" class="btn tilt-effect reveal" target="_blank" rel="noopener noreferrer">新增 Google 分頁</a>
-            <a href="https://mail.google.com/mail/mu/mp/635/" class="btn tilt-effect reveal" target="_blank" rel="noopener noreferrer">前往 Gmail</a>
-            <a href="https://workspace.google.com/intl/zh-TW/products/drive/" class="btn tilt-effect reveal" target="_blank" rel="noopener noreferrer">前往雲端硬碟</a>
-            <a href="https://edu.google.com/intl/ALL_tw/workspace-for-education/products/classroom/" class="btn tilt-effect reveal" target="_blank" rel="noopener noreferrer">前往 Classroom</a>
-            <a href="https://www.youtube.com/" class="btn tilt-effect reveal" target="_blank" rel="noopener noreferrer">前往 YouTube</a>
-            <a href="https://www.crazygames.com/" class="btn tilt-effect reveal" target="_blank" rel="noopener noreferrer">前往 CrazyGames</a>
+        <div class="menu-grid" id="menuGrid">
+            <a href="https://www.roblox.com/download" class="btn tilt-effect reveal search-item" target="_blank" rel="noopener noreferrer">點擊下載 Roblox</a>
+            <a href="https://www.google.com" class="btn tilt-effect reveal search-item" target="_blank" rel="noopener noreferrer">新增 Google 分頁</a>
+            <a href="https://mail.google.com/mail/mu/mp/635/" class="btn tilt-effect reveal search-item" target="_blank" rel="noopener noreferrer">前往 Gmail</a>
+            <a href="https://workspace.google.com/intl/zh-TW/products/drive/" class="btn tilt-effect reveal search-item" target="_blank" rel="noopener noreferrer">前往雲端硬碟</a>
+            <a href="https://edu.google.com/intl/ALL_tw/workspace-for-education/products/classroom/" class="btn tilt-effect reveal search-item" target="_blank" rel="noopener noreferrer">前往 Classroom</a>
+            <a href="https://www.youtube.com/" class="btn tilt-effect reveal search-item" target="_blank" rel="noopener noreferrer">前往 YouTube</a>
+            <a href="https://www.crazygames.com/" class="btn tilt-effect reveal search-item" target="_blank" rel="noopener noreferrer">前往 CrazyGames</a>
             
-            <a href="https://zack0512.github.io/joke" class="btn-colorful-flash tilt-effect reveal" target="_blank" rel="noopener noreferrer">
+            <a href="https://zack0512.github.io/joke" class="btn-colorful-flash tilt-effect reveal search-item" target="_blank" rel="noopener noreferrer">
                 <span>沙特每週笑話 😂</span>
             </a>
-            <a href="https://zack0512.github.io/cold" class="btn-colorful-flash tilt-effect reveal" target="_blank" rel="noopener noreferrer">
+            <a href="https://zack0512.github.io/cold" class="btn-colorful-flash tilt-effect reveal search-item" target="_blank" rel="noopener noreferrer">
                 <span>沙特每週冷知識 💡</span>
             </a>
             
-            <a href="https://zack0512.github.io/homework" class="btn tilt-effect reveal" target="_blank" rel="noopener noreferrer">前往沙特每日作業</a>
-            <a href="https://zack0512.github.io/tetris" class="btn tilt-effect reveal" target="_blank" rel="noopener noreferrer">前往沙特俄羅斯方塊</a>
-            <a href="https://zack0512.github.io/2048" class="btn tilt-effect reveal" target="_blank" rel="noopener noreferrer">前往沙特 2048</a>
-            <a href="https://zack0512.github.io/snake" class="btn tilt-effect reveal" target="_blank" rel="noopener noreferrer">前往沙特貪吃蛇</a>
+            <a href="https://zack0512.github.io/homework" class="btn tilt-effect reveal search-item" target="_blank" rel="noopener noreferrer">前往沙特每日作業</a>
+            <a href="https://zack0512.github.io/tetris" class="btn tilt-effect reveal search-item" target="_blank" rel="noopener noreferrer">前往沙特俄羅斯方塊</a>
+            <a href="https://zack0512.github.io/2048" class="btn tilt-effect reveal search-item" target="_blank" rel="noopener noreferrer">前往沙特 2048</a>
+            <a href="https://zack0512.github.io/snake" class="btn tilt-effect reveal search-item" target="_blank" rel="noopener noreferrer">前往沙特貪吃蛇</a>
             
-            <a href="https://zack0512.github.io/ballon" class="btn-colorful-flash tilt-effect reveal" target="_blank" rel="noopener noreferrer">
+            <a href="https://zack0512.github.io/ballon" class="btn-colorful-flash tilt-effect reveal search-item" target="_blank" rel="noopener noreferrer">
                 <span>沙特氣球遊戲 🎈</span>
             </a>
         </div>
@@ -475,7 +557,7 @@
             }, { duration: 250, fill: "forwards" });
         });
 
-        const interactiveElements = document.querySelectorAll('a, button');
+        const interactiveElements = document.querySelectorAll('a, button, input');
         interactiveElements.forEach(el => {
             el.addEventListener('mouseenter', () => cursorOutline.classList.add('cursor-hover'));
             el.addEventListener('mouseleave', () => cursorOutline.classList.remove('cursor-hover'));
@@ -493,10 +575,9 @@
                 setTimeout(typeWriter, 120);
             }
         }
-        // 開頁延遲開始打字
         setTimeout(typeWriter, 300);
 
-        // 4. 3D 卡片懸停與滑鼠互動（3D Tilt + Light Glow）
+        // 4. 3D 卡片懸停與滑鼠互動
         const tiltCards = document.querySelectorAll('.tilt-effect');
 
         tiltCards.forEach(card => {
@@ -505,43 +586,100 @@
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
 
-                // 計算傾斜角度 (最大 12 度)
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
                 const rotateX = ((y - centerY) / centerY) * -12;
                 const rotateY = ((x - centerX) / centerX) * 12;
 
-                // 更新 3D 傾斜與滑鼠位置變數
                 card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(8px)`;
                 card.style.setProperty('--mouse-x', `${x}px`);
                 card.style.setProperty('--mouse-y', `${y}px`);
             });
 
             card.addEventListener('mouseleave', () => {
-                // 恢復原位
                 card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
             });
         });
 
-        // 5. 滾動/滑動觸發與交錯入場動畫 (IntersectionObserver)
+        // 5. 滾動/滑動觸發 (IntersectionObserver)
         const revealElements = document.querySelectorAll('.reveal');
 
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach((entry, index) => {
                 if (entry.isIntersecting) {
-                    // 交錯延遲 (Stagger Delay)
                     setTimeout(() => {
                         entry.target.classList.add('active');
-                    }, index * 40);
+                    }, index * 35);
                     revealObserver.unobserve(entry.target);
                 }
             });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -40px 0px'
-        });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
         revealElements.forEach(el => revealObserver.observe(el));
+
+        // 6. 即時搜尋與快捷鍵支援
+        const searchInput = document.getElementById('searchInput');
+        const searchItems = document.querySelectorAll('.search-item');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+
+            searchItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        });
+
+        // 快捷鍵按下 '/' 自動聚焦搜尋框，'Escape' 清空
+        window.addEventListener('keydown', (e) => {
+            if (e.key === '/' && document.activeElement !== searchInput) {
+                e.preventDefault();
+                searchInput.focus();
+            } else if (e.key === 'Escape' && document.activeElement === searchInput) {
+                searchInput.value = '';
+                searchInput.dispatchEvent(new Event('input'));
+                searchInput.blur();
+            }
+        });
+
+        // 7. 手動切換主題 (Light/Dark Theme Toggle)
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const savedTheme = localStorage.getItem('user-theme') || 'dark';
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            themeToggleBtn.textContent = theme === 'dark' ? '☀️ 亮色模式' : '🌙 暗色模式';
+            localStorage.setItem('user-theme', theme);
+        }
+
+        applyTheme(savedTheme);
+
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+
+        // 8. 動態招呼語與時間顯示
+        function updateGreeting() {
+            const greetingEl = document.getElementById('greetingTime');
+            const now = new Date();
+            const hours = now.getHours();
+            let periodGreeting = "👋 歡迎來到";
+
+            if (hours >= 5 && hours < 12) periodGreeting = "🌅 早上好！歡迎來到";
+            else if (hours >= 12 && hours < 18) periodGreeting = "☀️ 午安！歡迎來到";
+            else periodGreeting = "🌙 晚上好！歡迎來到";
+
+            const timeString = now.toLocaleTimeString('zh-TW', { hour12: false, hour: '2-digit', minute: '2-digit' });
+            greetingEl.textContent = `${periodGreeting} | 當前時間 ${timeString}`;
+        }
+
+        updateGreeting();
+        setInterval(updateGreeting, 10000); // 每 10 秒更新一次
     </script>
 </body>
 </html>
