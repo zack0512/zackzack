@@ -49,6 +49,13 @@
             box-sizing: border-box;
         }
 
+        /* 隱藏預設游標，改用自訂滑鼠 */
+        @media (min-width: 769px) {
+            body, a, button, input {
+                cursor: none !important;
+            }
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             margin: 0;
@@ -59,6 +66,51 @@
             flex-direction: column;
             align-items: center;
             transition: background-color 0.3s ease, color 0.3s ease; /* 深淺切換滑順過渡 */
+        }
+
+        /* === 自訂滑鼠游標樣式 === */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 99999;
+            transition: opacity 0.3s ease;
+        }
+
+        .cursor-outline {
+            width: 36px;
+            height: 36px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 99998;
+            opacity: 0.7;
+            transition: transform 0.2s ease-out, background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* 懸停於按鈕或連結時放大特效 */
+        .cursor-hover {
+            transform: translate(-50%, -50%) scale(1.6);
+            background-color: rgba(0, 123, 255, 0.15);
+            border-color: #0056b3;
+            opacity: 1;
+        }
+
+        /* 手機平板版隱藏自訂游標 */
+        @media (max-width: 768px) {
+            .cursor-dot, .cursor-outline {
+                display: none !important;
+            }
         }
 
         header {
@@ -225,16 +277,19 @@
 </head>
 <body>
 
+    <!-- 自訂游標元素 -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
     <header>
         <h1>沙特萬能控制板</h1>
         <a href="https://zack0512.github.io/happy/" class="btn-colorful-flash" target="_blank" rel="noopener noreferrer">
             <span>前往沙特驚喜</span>
         </a>
         <p><strong>⬇️⭐歡迎自由填答⭐⬇️</strong></p><br>
-  <a href="https://forms.gle/1P2aF2Lsrt4iYuVZ7" class="btn-colorful-flash" target="_blank" rel="noopener noreferrer">
+        <a href="https://forms.gle/1P2aF2Lsrt4iYuVZ7" class="btn-colorful-flash" target="_blank" rel="noopener noreferrer">
             <span>前往修改建議網站問卷</span>
-  </a>
-        
+        </a>
     </header>
 
     <main>
@@ -246,21 +301,20 @@
             <a href="https://edu.google.com/intl/ALL_tw/workspace-for-education/products/classroom/" class="btn" target="_blank" rel="noopener noreferrer">前往 Classroom</a>
             <a href="https://www.youtube.com/" class="btn" target="_blank" rel="noopener noreferrer">前往 YouTube</a>
             <a href="https://www.crazygames.com/" class="btn" target="_blank" rel="noopener noreferrer">前往 CrazyGames</a>
-                    <a href="https://zack0512.github.io/joke" class="btn-colorful-flash" target="_blank" rel="noopener noreferrer">
-            <span>前往沙特每週笑話</span>
-        </a>
-                    <a href="https://zack0512.github.io/cold" class="btn-colorful-flash" target="_blank" rel="noopener noreferrer">
-            <span>前往沙特每週冷知識</span>
-                    </a>
+            <a href="https://zack0512.github.io/joke" class="btn-colorful-flash" target="_blank" rel="noopener noreferrer">
+                <span>前往沙特每週笑話</span>
+            </a>
+            <a href="https://zack0512.github.io/cold" class="btn-colorful-flash" target="_blank" rel="noopener noreferrer">
+                <span>前往沙特每週冷知識</span>
+            </a>
             
             <a href="https://zack0512.github.io/homework" class="btn" target="_blank" rel="noopener noreferrer">前往沙特每日作業</a>
             <a href="https://zack0512.github.io/tetris" class="btn" target="_blank" rel="noopener noreferrer">前往沙特俄羅斯方塊</a>
             <a href="https://zack0512.github.io/2048" class="btn" target="_blank" rel="noopener noreferrer">前往沙特 2048</a>
             <a href="https://zack0512.github.io/snake" class="btn" target="_blank" rel="noopener noreferrer">前往沙特貪吃蛇</a>
-                    <a href="https://zack0512.github.io/ballon" class="btn-colorful-flash" target="_blank" rel="noopener noreferrer">
-            <span>前往沙特氣球遊戲</span>
-                    </a>
-            
+            <a href="https://zack0512.github.io/ballon" class="btn-colorful-flash" target="_blank" rel="noopener noreferrer">
+                <span>前往沙特氣球遊戲</span>
+            </a>
         </div>
     </main>
 
@@ -279,6 +333,7 @@
     </aside>
 
     <script>
+        // Cookie 邏輯
         window.addEventListener('DOMContentLoaded', () => {
             if (!localStorage.getItem('cookieConsent')) {
                 document.getElementById('cookieBanner').style.display = 'flex';
@@ -297,6 +352,32 @@
         function declineCookie() {
             setConsent('declined');
         }
+
+        // === 自訂游標腳本 ===
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            // 實心點即時跟隨
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // 外圈延遲平滑跟隨
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 250, fill: "forwards" });
+        });
+
+        // 綁定可互動元素（懸停時外圈放大）
+        const interactiveElements = document.querySelectorAll('a, button');
+        interactiveElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursorOutline.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => cursorOutline.classList.remove('cursor-hover'));
+        });
     </script>
 </body>
 </html>
